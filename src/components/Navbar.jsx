@@ -18,7 +18,7 @@ const Navbar = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 md:top-4 md:pt-0">
+        <header className="hidden xl:block fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 md:top-4 md:pt-0">
             <div className="mx-auto max-w-7xl">
 
                 {/* Main Header */}
@@ -79,8 +79,7 @@ const Navbar = () => {
                     {/* Desktop Navigation */}
                     <nav
                         className="
-                    hidden
-                    lg:flex
+                    flex
                     items-center
                     gap-1
                     rounded-xl
@@ -134,7 +133,7 @@ const Navbar = () => {
                             type="button"
                             aria-label="Account"
                             className="
-                        hidden
+                        flex
                         h-10
                         w-10
                         items-center
@@ -154,8 +153,6 @@ const Navbar = () => {
                         focus:outline-none
                         focus:ring-2
                         focus:ring-violet-500/50
-
-                        md:flex
                     "
                         >
                             <User
@@ -175,33 +172,7 @@ const Navbar = () => {
                                     : "Open menu"
                             }
                             aria-expanded={open}
-                            className="
-                        flex
-                        h-10
-                        w-10
-                        items-center
-                        justify-center
-                        rounded-xl
-                        border
-                        border-white/10
-                        bg-white/[0.04]
-                        text-slate-300
-                        shadow-sm
-                        transition-all
-                        duration-200
-
-                        hover:border-white/15
-                        hover:bg-white/[0.08]
-                        hover:text-white
-
-                        active:scale-95
-
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-violet-500/50
-
-                        lg:hidden
-                    "
+                            className="hidden"
                         >
                             {open ? (
                                 <X
@@ -221,20 +192,7 @@ const Navbar = () => {
 
 
                 {/* Mobile / Tablet Navigation */}
-                <div
-                    className={`
-                overflow-hidden
-                transition-all
-                duration-300
-                ease-out
-                lg:hidden
-
-                ${open
-                            ? "mt-2 max-h-[500px] opacity-100"
-                            : "max-h-0 opacity-0"
-                        }
-            `}
-                >
+                <div className="hidden">
                     <div
                         className="
                     rounded-2xl

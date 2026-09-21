@@ -20,6 +20,7 @@ import {
 import newBg from "../assets/new-bg.png";
 // import phoneMockup from "../assets/mobile-preview.png";
 import Footer from "../components/Footer";
+import logo from "../assets/logo.png"
 
 const games = [
     {
@@ -163,17 +164,17 @@ export default function Home() {
 
             <div
                 className="
-            relative
-            z-10
-            mx-auto
-            max-w-7xl
-            px-4
-            pb-16
-            pt-8
-            sm:px-6
-            sm:pt-12
-            lg:px-8
-        "
+        relative
+        z-10
+        mx-auto
+        max-w-7xl
+        px-4
+        pb-16
+        pt-0
+        sm:px-6
+        lg:px-8
+        lg:pt-8
+    "
             >
 
                 {/* =====================================================
@@ -183,15 +184,19 @@ export default function Home() {
                 <section className="mx-auto max-w-3xl text-center">
 
                     {/* Logo / Brand */}
+
+                    {/* MiniVerse Text - Large Screen */}
                     <h1
                         className="
-                    text-5xl
-                    font-black
-                    tracking-[-0.04em]
-                    text-white
-                    sm:text-6xl
-                    md:text-7xl
-                "
+            hidden
+            lg:block
+            text-5xl
+            font-black
+            tracking-[-0.04em]
+            text-white
+            sm:text-6xl
+            md:text-7xl
+        "
                     >
                         <span className="text-white">
                             Mini
@@ -199,28 +204,43 @@ export default function Home() {
 
                         <span
                             className="
-                        bg-gradient-to-r
-                        from-violet-400
-                        via-fuchsia-400
-                        to-pink-400
-                        bg-clip-text
-                        text-transparent
-                    "
+                bg-gradient-to-r
+                from-violet-400
+                via-fuchsia-400
+                to-pink-400
+                bg-clip-text
+                text-transparent
+            "
                         >
                             Verse
                         </span>
                     </h1>
 
+                    {/* Logo - Mobile / Tablet */}
+                    <div className="flex justify-center lg:hidden">
+                        <img
+                            src={logo}
+                            alt="MiniVerse"
+                            className="
+    h-20
+    w-auto
+    object-contain
+    sm:h-28
+    md:h-32
+"
+                        />
+                    </div>
+
                     {/* Main Tagline */}
                     <h2
                         className="
-                    mt-4
-                    text-2xl
-                    font-bold
-                    tracking-tight
-                    text-white
-                    sm:text-3xl
-                "
+            mt-4
+            text-2xl
+            font-bold
+            tracking-tight
+            text-white
+            sm:text-3xl
+        "
                     >
                         Small apps. Big productivity.
                     </h2>
@@ -228,15 +248,15 @@ export default function Home() {
                     {/* Description */}
                     <p
                         className="
-                    mx-auto
-                    mt-4
-                    max-w-2xl
-                    text-sm
-                    leading-6
-                    text-slate-400
-                    sm:text-base
-                    sm:leading-7
-                "
+            mx-auto
+            mt-4
+            max-w-2xl
+            text-sm
+            leading-6
+            text-slate-400
+            sm:text-base
+            sm:leading-7
+        "
                     >
                         Simple tools for everyday tasks, money management,
                         productivity, and fun — all in one place.
