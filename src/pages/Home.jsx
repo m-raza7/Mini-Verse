@@ -173,7 +173,7 @@ export default function Home() {
         pt-0
         sm:px-6
         lg:px-8
-        lg:pt-8
+        lg:pt-12
     "
             >
 
