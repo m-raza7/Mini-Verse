@@ -1,5 +1,9 @@
 {
   "appId": "com.mrreact.miniVerse",
-  "appName": "Mini Games",
-  "webDir": "dist"
+  "appName": "MiniVerse",
+  "webDir": "dist",
+  "server": {
+    "url": "mini-verse-pearl.vercel.app",
+    "cleartext": false
+  }
 }
