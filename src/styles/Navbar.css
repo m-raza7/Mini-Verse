@@ -1,0 +1,39 @@
+/* MiniVerse Theme Variables */
+
+:root {
+  color-scheme: light;
+
+  --mv-bg: #f8f7ff;
+  --mv-surface: #ffffff;
+  --mv-card: #ffffff;
+  --mv-text: #21183b;
+  --mv-muted: #77718c;
+  --mv-border: #e8e1fa;
+  --mv-primary: #7548f5;
+  --mv-secondary: #c77dff;
+  --mv-accent: #ed72cf;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --mv-bg: #0b0a18;
+  --mv-surface: #100e25;
+  --mv-card: #17152e;
+  --mv-text: #f7f4ff;
+  --mv-muted: #a19ab8;
+  --mv-border: rgba(255, 255, 255, 0.1);
+  --mv-primary: #8b5cf6;
+  --mv-secondary: #c77dff;
+  --mv-accent: #ed72cf;
+}
+
+/* Smooth theme changes */
+
+body,
+header,
+main,
+footer {
+  transition: background-color 300ms ease, color 300ms ease,
+    border-color 300ms ease;
+}

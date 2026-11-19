@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
 
+import { Link } from "react-router-dom";
 import {
     Shield,
     FileText,
     Mail,
     ArrowUpRight,
     Sparkles,
+    Gamepad2,
+    Heart,
 } from "lucide-react";
-
 import {
     FaGithub,
     FaLinkedin,
@@ -15,545 +16,243 @@ import {
     FaYoutube,
 } from "react-icons/fa";
 
+import logo from "../assets/logo.png";
+
+const quickLinks = [
+    { name: "Home", path: "/" },
+    { name: "Todo App", path: "/todos" },
+    { name: "Expense Tracker", path: "/expense-tracker" },
+    { name: "Money Tracker", path: "/money-tracker" },
+    { name: "Flip Coin", path: "/flip-coin" },
+];
+
+const supportLinks = [
+    { name: "Privacy Policy", path: "/policy", icon: Shield },
+    { name: "Terms & Conditions", path: "/terms-conditions", icon: FileText },
+];
+
+const socialLinks = [
+    {
+        name: "GitHub",
+        icon: FaGithub,
+        href: "#",
+        hover: "hover:text-white hover:border-white/30",
+    },
+    {
+        name: "LinkedIn",
+        icon: FaLinkedin,
+        href: "#",
+        hover: "hover:text-blue-400 hover:border-blue-400/30",
+    },
+    {
+        name: "Instagram",
+        icon: FaInstagram,
+        href: "#",
+        hover: "hover:text-pink-400 hover:border-pink-400/30",
+    },
+    {
+        name: "YouTube",
+        icon: FaYoutube,
+        href: "#",
+        hover: "hover:text-red-400 hover:border-red-400/30",
+    },
+];
+
 const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="relative px-3 pb-4 pt-8 sm:px-5 sm:pt-10">
-            <div className="mx-auto max-w-7xl">
+        <footer className="relative mt-12 border-t border-white/[0.06] bg-[#080B18]">
 
-                {/* =====================================================
-                    FOOTER CARD
-                ====================================================== */}
+            {/* BACKGROUND GLOW */}
 
-                <div
-                    className="
-                        relative
-                        overflow-hidden
-                        rounded-[28px]
-                        border
-                        border-white/[0.08]
-                        bg-[#0b0f1c]/80
-                        shadow-2xl
-                        shadow-black/30
-                        backdrop-blur-2xl
-                    "
-                >
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -bottom-32 left-1/4 h-64 w-64 rounded-full bg-violet-600/[0.06] blur-[100px]" />
+                <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-purple-600/[0.05] blur-[90px]" />
+            </div>
 
-                    {/* Background Glow */}
+            <div className="relative mx-auto max-w-[1400px] px-5 py-9 sm:px-8 lg:px-10">
 
-                    <div
-                        className="
-                            pointer-events-none
-                            absolute
-                            -right-32
-                            -top-32
-                            h-72
-                            w-72
-                            rounded-full
-                            bg-violet-600/[0.08]
-                            blur-[100px]
-                        "
-                    />
+                {/* MAIN FOOTER */}
 
-                    <div
-                        className="
-                            pointer-events-none
-                            absolute
-                            -bottom-40
-                            left-1/4
-                            h-72
-                            w-72
-                            rounded-full
-                            bg-fuchsia-600/[0.05]
-                            blur-[100px]
-                        "
-                    />
+                <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
 
-                    {/* =================================================
-                        MAIN FOOTER
-                    ================================================== */}
+                    {/* BRAND */}
 
-                    <div
-                        className="
-                            relative
-                            grid
-                            gap-8
-                            px-5
-                            py-7
+                    <div>
 
-                            sm:px-7
-                            sm:py-8
+                        <Link to="/" className="group inline-flex items-center gap-3">
 
-                            lg:grid-cols-[1.5fr_1fr_1fr]
-                            lg:gap-10
-                            lg:px-10
-                            lg:py-9
-                        "
-                    >
+                            <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-violet-500/20 bg-[#11152A] shadow-lg shadow-violet-500/10 transition duration-300 group-hover:border-violet-400/50 group-hover:shadow-violet-500/20">
 
-                        {/* =================================================
-                            BRAND
-                        ================================================== */}
-
-                        <div>
-
-                            <div className="flex items-center gap-3">
-
-                                {/* Logo */}
-
-                                <div
-                                    className="
-                                        flex
-                                        h-12
-                                        w-12
-                                        shrink-0
-                                        items-center
-                                        justify-center
-                                        overflow-hidden
-                                        rounded-2xl
-                                        border
-                                        border-violet-400/20
-                                        bg-slate-950/80
-                                        shadow-lg
-                                        shadow-violet-500/10
-                                    "
-                                >
-                                    <img
-                                        src="/logo.png"
-                                        alt="MiniVerse"
-                                        className="
-                                            h-full
-                                            w-full
-                                            object-contain
-                                            p-1.5
-                                        "
-                                    />
-                                </div>
-
-                                {/* Brand */}
-
-                                <div>
-
-                                    <h2 className="text-2xl font-black tracking-tight text-white">
-                                        Mini
-                                        <span
-                                            className="
-                                                bg-gradient-to-r
-                                                from-violet-400
-                                                via-fuchsia-400
-                                                to-pink-400
-                                                bg-clip-text
-                                                text-transparent
-                                            "
-                                        >
-                                            Verse
-                                        </span>
-                                    </h2>
-
-                                    <div className="mt-0.5 flex items-center gap-1.5">
-                                        <Sparkles
-                                            size={11}
-                                            className="text-violet-400"
-                                        />
-
-                                        <span className="text-[11px] font-medium text-slate-500">
-                                            Mini apps. One universe.
-                                        </span>
-                                    </div>
-
-                                </div>
+                                <img
+                                    src={logo}
+                                    alt="MiniVerse"
+                                    className="h-full w-full object-contain p-1.5"
+                                />
 
                             </div>
 
-                            {/* Description */}
+                            <div>
+                                <h2 className="text-xl font-black tracking-tight text-white">
+                                    Mini<span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Verse</span>
+                                </h2>
 
-                            <p
-                                className="
-                                    mt-5
-                                    max-w-md
-                                    text-sm
-                                    leading-6
-                                    text-slate-500
-                                "
-                            >
-                                Simple tools and mini apps for everyday
-                                life — from productivity and money management
-                                to quick games and fun.
-                            </p>
-
-                            {/* Social */}
-
-                            <div className="mt-5 flex items-center gap-2.5">
-
-                                <a
-                                    href="#"
-                                    aria-label="FaGithub "
-                                    className="
-                                        flex
-                                        h-9
-                                        w-9
-                                        items-center
-                                        justify-center
-                                        rounded-xl
-                                        border
-                                        border-white/[0.07]
-                                        bg-white/[0.03]
-                                        text-slate-500
-                                        transition-all
-                                        duration-200
-                                        hover:border-white/15
-                                        hover:bg-white/[0.07]
-                                        hover:text-white
-                                        active:scale-95
-                                    "
-                                >
-                                    <FaGithub size={17} />
-                                </a>
-
-                                <a
-                                    href="#"
-                                    aria-label=" FaLinkedin"
-                                    className="
-                                        flex
-                                        h-9
-                                        w-9
-                                        items-center
-                                        justify-center
-                                        rounded-xl
-                                        border
-                                        border-white/[0.07]
-                                        bg-white/[0.03]
-                                        text-slate-500
-                                        transition-all
-                                        duration-200
-                                        hover:border-blue-400/20
-                                        hover:bg-blue-400/10
-                                        hover:text-blue-400
-                                        active:scale-95
-                                    "
-                                >
-                                    < FaLinkedin size={17} />
-                                </a>
-
-                                <a
-                                    href="#"
-                                    aria-label="FaInstagram"
-                                    className="
-                                        flex
-                                        h-9
-                                        w-9
-                                        items-center
-                                        justify-center
-                                        rounded-xl
-                                        border
-                                        border-white/[0.07]
-                                        bg-white/[0.03]
-                                        text-slate-500
-                                        transition-all
-                                        duration-200
-                                        hover:border-pink-400/20
-                                        hover:bg-pink-400/10
-                                        hover:text-pink-400
-                                        active:scale-95
-                                    "
-                                >
-                                    <FaInstagram size={17} />
-                                </a>
-
-                                <a
-                                    href="#"
-                                    aria-label="FaYoutube"
-                                    className="
-                                        flex
-                                        h-9
-                                        w-9
-                                        items-center
-                                        justify-center
-                                        rounded-xl
-                                        border
-                                        border-white/[0.07]
-                                        bg-white/[0.03]
-                                        text-slate-500
-                                        transition-all
-                                        duration-200
-                                        hover:border-red-400/20
-                                        hover:bg-red-400/10
-                                        hover:text-red-400
-                                        active:scale-95
-                                    "
-                                >
-                                    <FaYoutube size={17} />
-                                </a>
-
+                                <p className="mt-0.5 text-[9px] font-semibold tracking-[0.2em] text-slate-500">
+                                    YOUR DIGITAL UNIVERSE
+                                </p>
                             </div>
 
-                        </div>
+                        </Link>
 
+                        <p className="mt-5 max-w-xs text-xs leading-6 text-slate-500">
+                            One universe. Endless possibilities. Explore productivity
+                            tools, money management applications and exciting mini games.
+                        </p>
 
-                        {/* =================================================
-                            QUICK LINKS
-                        ================================================== */}
+                        {/* SOCIAL LINKS */}
 
-                        <div>
+                        <div className="mt-5 flex items-center gap-2">
 
-                            <h3
-                                className="
-                                    text-xs
-                                    font-bold
-                                    uppercase
-                                    tracking-[0.16em]
-                                    text-slate-400
-                                "
-                            >
-                                Quick Links
-                            </h3>
+                            {socialLinks.map((social) => {
+                                const Icon = social.icon;
 
-                            <div className="mt-4 space-y-2.5">
-
-                                <Link
-                                    to="/"
-                                    className="
-                                        group
-                                        flex
-                                        w-fit
-                                        items-center
-                                        gap-1.5
-                                        text-sm
-                                        text-slate-500
-                                        transition-colors
-                                        hover:text-white
-                                    "
-                                >
-                                    Home
-
-                                    <ArrowUpRight
-                                        size={13}
-                                        className="
-                                            opacity-0
-                                            transition-all
-                                            group-hover:translate-x-0.5
-                                            group-hover:-translate-y-0.5
-                                            group-hover:opacity-100
-                                        "
-                                    />
-                                </Link>
-
-                                <Link
-                                    to="/todos"
-                                    className="
-                                        group
-                                        flex
-                                        w-fit
-                                        items-center
-                                        gap-1.5
-                                        text-sm
-                                        text-slate-500
-                                        transition-colors
-                                        hover:text-white
-                                    "
-                                >
-                                    Todo App
-
-                                    <ArrowUpRight
-                                        size={13}
-                                        className="
-                                            opacity-0
-                                            transition-all
-                                            group-hover:translate-x-0.5
-                                            group-hover:-translate-y-0.5
-                                            group-hover:opacity-100
-                                        "
-                                    />
-                                </Link>
-
-                                <Link
-                                    to="/expense-tracker"
-                                    className="
-                                        group
-                                        flex
-                                        w-fit
-                                        items-center
-                                        gap-1.5
-                                        text-sm
-                                        text-slate-500
-                                        transition-colors
-                                        hover:text-white
-                                    "
-                                >
-                                    Expense Tracker
-
-                                    <ArrowUpRight
-                                        size={13}
-                                        className="
-                                            opacity-0
-                                            transition-all
-                                            group-hover:translate-x-0.5
-                                            group-hover:-translate-y-0.5
-                                            group-hover:opacity-100
-                                        "
-                                    />
-                                </Link>
-
-                                <Link
-                                    to="/flip-coin"
-                                    className="
-                                        group
-                                        flex
-                                        w-fit
-                                        items-center
-                                        gap-1.5
-                                        text-sm
-                                        text-slate-500
-                                        transition-colors
-                                        hover:text-white
-                                    "
-                                >
-                                    Flip Coin
-
-                                    <ArrowUpRight
-                                        size={13}
-                                        className="
-                                            opacity-0
-                                            transition-all
-                                            group-hover:translate-x-0.5
-                                            group-hover:-translate-y-0.5
-                                            group-hover:opacity-100
-                                        "
-                                    />
-                                </Link>
-
-                            </div>
-
-                        </div>
-
-
-                        {/* =================================================
-                            SUPPORT / LEGAL
-                        ================================================== */}
-
-                        <div>
-
-                            <h3
-                                className="
-                                    text-xs
-                                    font-bold
-                                    uppercase
-                                    tracking-[0.16em]
-                                    text-slate-400
-                                "
-                            >
-                                Support
-                            </h3>
-
-                            <div className="mt-4 space-y-2.5">
-
-                                <Link
-                                    to="/policy"
-                                    className="
-                                        flex
-                                        w-fit
-                                        items-center
-                                        gap-2
-                                        text-sm
-                                        text-slate-500
-                                        transition-colors
-                                        hover:text-violet-400
-                                    "
-                                >
-                                    <Shield size={15} />
-                                    Privacy Policy
-                                </Link>
-
-                                <Link
-                                    to="/terms-conditions"
-                                    className="
-                                        flex
-                                        w-fit
-                                        items-center
-                                        gap-2
-                                        text-sm
-                                        text-slate-500
-                                        transition-colors
-                                        hover:text-violet-400
-                                    "
-                                >
-                                    <FileText size={15} />
-                                    Terms & Conditions
-                                </Link>
-
-                                <a
-                                    href="https://portfolio-frontend-sand-delta.vercel.app/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="
-                                        flex
-                                        w-fit
-                                        items-center
-                                        gap-2
-                                        text-sm
-                                        text-slate-500
-                                        transition-colors
-                                        hover:text-violet-400
-                                    "
-                                >
-                                    <Mail size={15} />
-                                    Contact
-                                </a>
-
-                            </div>
+                                return (
+                                    <a
+                                        key={social.name}
+                                        href={social.href}
+                                        aria-label={social.name}
+                                        title={social.name}
+                                        className={`flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.025] text-slate-500 transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.06] ${social.hover}`}
+                                    >
+                                        <Icon size={15} />
+                                    </a>
+                                );
+                            })}
 
                         </div>
 
                     </div>
 
+                    {/* QUICK LINKS */}
 
-                    {/* =================================================
-                        BOTTOM BAR
-                    ================================================== */}
+                    <div>
 
-                    <div
-                        className="
-                            relative
-                            mx-5
-                            border-t
-                            border-white/[0.06]
-                            py-4
+                        <div className="mb-5 flex items-center gap-2">
+                            <Gamepad2 size={15} className="text-violet-400" />
+                            <h3 className="text-[10px] font-bold tracking-[0.18em] text-slate-300">
+                                EXPLORE
+                            </h3>
+                        </div>
 
-                            sm:mx-7
+                        <div className="space-y-3">
 
-                            lg:mx-10
-                        "
-                    >
+                            {quickLinks.map((item) => (
+                                <Link
+                                    key={item.path}
+                                    to={item.path}
+                                    className="group flex w-fit items-center gap-2 text-xs text-slate-500 transition-colors hover:text-violet-300"
+                                >
+                                    {item.name}
 
-                        <div
-                            className="
-                                flex
-                                flex-col
-                                items-center
-                                justify-between
-                                gap-2
-                                text-center
-
-                                sm:flex-row
-                                sm:text-left
-                            "
-                        >
-
-                            <p className="text-[11px] text-slate-600">
-                                © {currentYear}{" "}
-                                <span className="font-semibold text-slate-400">
-                                    MiniVerse
-                                </span>
-                                . All rights reserved.
-                            </p>
-
-                            <p className="text-[11px] text-slate-600">
-                                Built for everyday moments.
-                            </p>
+                                    <ArrowUpRight
+                                        size={12}
+                                        className="opacity-0 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100"
+                                    />
+                                </Link>
+                            ))}
 
                         </div>
 
+                    </div>
+
+                    {/* SUPPORT */}
+
+                    <div>
+
+                        <div className="mb-5 flex items-center gap-2">
+                            <Shield size={15} className="text-violet-400" />
+
+                            <h3 className="text-[10px] font-bold tracking-[0.18em] text-slate-300">
+                                INFORMATION
+                            </h3>
+                        </div>
+
+                        <div className="space-y-3">
+
+                            {supportLinks.map((item) => {
+                                const Icon = item.icon;
+
+                                return (
+                                    <Link
+                                        key={item.path}
+                                        to={item.path}
+                                        className="group flex w-fit items-center gap-2 text-xs text-slate-500 transition-colors hover:text-violet-300"
+                                    >
+                                        <Icon size={14} />
+                                        {item.name}
+                                    </Link>
+                                );
+                            })}
+
+                        </div>
+
+                    </div>
+
+                    {/* CONTACT */}
+
+                    <div>
+
+                        <div className="mb-5 flex items-center gap-2">
+                            <Mail size={15} className="text-violet-400" />
+
+                            <h3 className="text-[10px] font-bold tracking-[0.18em] text-slate-300">
+                                GET IN TOUCH
+                            </h3>
+                        </div>
+
+                        <p className="max-w-[220px] text-xs leading-6 text-slate-500">
+                            Have an idea, suggestion or feedback? Let's connect.
+                        </p>
+
+                        <a
+                            href="https://portfolio-frontend-sand-delta.vercel.app/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-4 inline-flex items-center gap-2 rounded-lg border border-violet-500/25 bg-violet-500/10 px-3 py-2 text-[11px] font-semibold text-violet-300 transition-all duration-300 hover:border-violet-400/50 hover:bg-violet-500/20 hover:text-white"
+                        >
+                            Visit Portfolio
+                            <ArrowUpRight size={13} />
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {/* BOTTOM DIVIDER */}
+
+                <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/[0.10] to-transparent" />
+
+                {/* BOTTOM BAR */}
+
+                <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+
+                    <p className="text-center text-[10px] text-slate-600 sm:text-left">
+                        © {currentYear}{" "}
+                        <span className="font-bold text-slate-400">
+                            MiniVerse
+                        </span>
+                        . All rights reserved.
+                    </p>
+
+                    <div className="flex items-center gap-1.5 text-[10px] text-slate-600">
+                        Made for everyday moments
+                        <Heart size={11} className="fill-violet-500/50 text-violet-400" />
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[9px] font-semibold tracking-widest text-violet-400/70">
+                        <Sparkles size={12} />
+                        MINI APPS. ONE UNIVERSE.
                     </div>
 
                 </div>

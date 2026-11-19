@@ -32,6 +32,7 @@ import ExpenseTracker from "./pages/ExpenseTracker/ExpenseTracker";
 import MoneyTracker from "./pages/MoneyTracker/MoneyTracker";
 
 import MoneyRecoveryTracker from "./pages/Money-Recovery-Tracker/MoneyRecoveryTracker";
+import SnakeGame from "./pages/SnakeGame/components/SnakeGame";
 
 const App = () => {
   const [showIntro, setShowIntro] = useState(false);
@@ -145,7 +146,13 @@ const App = () => {
           path="/money-tracker/*"
           element={<MoneyTracker />}
         />
+        <Route
+          path="/games/snake"
+          element={<SnakeGame />}
+        />
+
       </Routes>
+
 
       {/* <Footer /> */}
     </main>
