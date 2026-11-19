@@ -33,6 +33,7 @@ import {
     Sparkles,
     Command,
     ArrowUpRight,
+    Grid2X2,
 } from "lucide-react";
 
 import logo from "../assets/logo.png";
@@ -108,6 +109,12 @@ const navigationGroups = [
                 path: "/games/snake",
                 icon: Gamepad2,
                 keywords: "snake arcade snake game",
+            },
+            {
+                name: "Dots & Boxes",
+                path: "/games/dots-and-boxes",
+                icon: Grid2X2,
+                keywords: "dots boxes multiplayer connect lines puzzle",
             },
         ],
     },
