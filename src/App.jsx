@@ -1,50 +1,175 @@
-import React, { useEffect, useState } from "react";
 
-import { Routes, Route, useNavigate } from "react-router-dom";
+import React, {
+  useEffect,
+  useState,
+  lazy,
+  Suspense,
+} from "react";
+
+import {
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 
 import { App as CapacitorApp } from "@capacitor/app";
 
+// Static components
 import Navbar from "./components/Navbar";
-
-import Footer from "./components/Footer";
-
 import AppLoader from "./components/AppLoader";
 
-import IntroVideo from "./components/IntroVideo";
+// =====================================
+// LAZY LOADED PAGES
+// =====================================
 
-import Home from "./pages/Home";
+const Home = lazy(() => import("./pages/Home"));
 
-import TodoApp from "./pages/TodoApp";
+const TodoApp = lazy(() => import("./pages/TodoApp"));
 
-import FlipCoinApp from "./pages/FlipCoinApp";
+const FlipCoinApp = lazy(() => import("./pages/FlipCoinApp"));
 
-import RightWrongGame from "./pages/RightWrongGame";
+const RightWrongGame = lazy(
+  () => import("./pages/RightWrongGame")
+);
 
-import RightWrongGrid from "./pages/RightWrongGrid";
+const RightWrongGrid = lazy(
+  () => import("./pages/RightWrongGrid")
+);
 
-import TermsConditions from "./pages/TermsConditions";
+const TermsConditions = lazy(
+  () => import("./pages/TermsConditions")
+);
 
-import Policy from "./pages/Policy";
+const Policy = lazy(() => import("./pages/Policy"));
 
-import ExpenseTracker from "./pages/ExpenseTracker/ExpenseTracker";
+// Expense Tracker
+const ExpenseTracker = lazy(
+  () => import("./pages/ExpenseTracker/ExpenseTracker")
+);
 
 // Money Tracker
-import MoneyTracker from "./pages/MoneyTracker/MoneyTracker";
+const MoneyTracker = lazy(
+  () => import("./pages/MoneyTracker/MoneyTracker")
+);
 
-import MoneyRecoveryTracker from "./pages/Money-Recovery-Tracker/MoneyRecoveryTracker";
+// Money Recovery Tracker
+const MoneyRecoveryTracker = lazy(
+  () => import("./pages/Money-Recovery-Tracker/MoneyRecoveryTracker")
+);
 
-import SnakeGame from "./pages/SnakeGame/components/SnakeGame";
+// Snake Game
+const SnakeGame = lazy(
+  () => import("./pages/SnakeGame/components/SnakeGame")
+);
 
-import DotsAndBoxes from "./pages/DotsAndBoxes/DotsAndBoxes"
+// Dots & Boxes
+const DotsAndBoxes = lazy(
+  () => import("./pages/DotsAndBoxes/DotsAndBoxes")
+);
+
+
+// =====================================
+// PAGE LOADING FALLBACK
+// =====================================
+
+const PageLoader = () => {
+  return (
+    <div className="
+      flex min-h-[70vh] w-full
+      items-center justify-center
+      bg-[#080B18] px-4
+    ">
+
+      <div className="flex flex-col items-center gap-5">
+
+        {/* Animated Loader */}
+        <div className="relative flex h-16 w-16 items-center justify-center">
+
+          <div className="
+            absolute inset-0 rounded-2xl
+            border-2 border-purple-500/20
+          " />
+
+          <div className="
+            absolute inset-0 rounded-2xl
+            border-2 border-transparent
+            border-t-purple-500
+            border-r-violet-400
+            animate-spin
+          " />
+
+          <div className="
+            flex h-10 w-10 items-center
+            justify-center rounded-xl
+            bg-gradient-to-br
+            from-purple-600 to-violet-700
+            shadow-lg shadow-purple-500/30
+          ">
+            <span className="
+              text-lg font-black text-white
+            ">
+              M
+            </span>
+          </div>
+
+        </div>
+
+        {/* Loading Text */}
+        <div className="text-center">
+
+          <h3 className="
+            text-sm font-bold
+            tracking-wider text-white
+          ">
+            MiniVerse
+          </h3>
+
+          <p className="
+            mt-2 text-xs text-slate-400
+          ">
+            Loading your experience...
+          </p>
+
+        </div>
+
+        {/* Loading Progress Animation */}
+        <div className="
+          h-1 w-32 overflow-hidden
+          rounded-full bg-white/10
+        ">
+          <div className="
+            h-full w-1/2 rounded-full
+            bg-gradient-to-r
+            from-purple-500 to-violet-400
+            animate-pulse
+          " />
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
+
+
+// =====================================
+// MAIN APP
+// =====================================
 
 const App = () => {
+
   const [showIntro, setShowIntro] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
-  // Intro Loader
+
+  // =====================================
+  // INTRO LOADER
+  // =====================================
+
   useEffect(() => {
+
     const introPlayed = sessionStorage.getItem("introPlayed");
 
     if (introPlayed) {
@@ -55,117 +180,183 @@ const App = () => {
     setShowIntro(true);
 
     const timer = setTimeout(() => {
+
       sessionStorage.setItem("introPlayed", "true");
+
       setShowIntro(false);
       setLoading(false);
+
     }, 3000);
 
     return () => clearTimeout(timer);
+
   }, []);
 
-  // Android Hardware Back Button
+
+  // =====================================
+  // ANDROID HARDWARE BACK BUTTON
+  // =====================================
+
   useEffect(() => {
+
     let backButtonListener = null;
+    let active = true;
 
     const setupBackButton = async () => {
-      backButtonListener = await CapacitorApp.addListener(
-        "backButton",
-        ({ canGoBack }) => {
-          if (canGoBack) {
-            navigate(-1);
+
+      try {
+
+        const listener = await CapacitorApp.addListener(
+          "backButton",
+          ({ canGoBack }) => {
+
+            if (canGoBack) {
+              navigate(-1);
+            }
+
           }
+        );
+
+        if (active) {
+          backButtonListener = listener;
+        } else {
+          listener.remove();
         }
-      );
+
+      } catch (error) {
+        console.error(
+          "Android back button error:",
+          error
+        );
+      }
+
     };
 
     setupBackButton();
 
     return () => {
+      active = false;
       backButtonListener?.remove();
     };
+
   }, [navigate]);
+
+
+  // =====================================
+  // INITIAL LOADING
+  // =====================================
 
   if (loading && !showIntro) {
     return null;
   }
 
+  // =====================================
+  // INTRO SCREEN
+  // =====================================
+
   if (showIntro) {
     return <AppLoader />;
   }
 
+
+  // =====================================
+  // APPLICATION ROUTES
+  // =====================================
+
   return (
-    <main>
+
+    <main className="min-h-screen w-full">
+
+      {/* Navbar remains loaded */}
       <Navbar />
 
-      <Routes>
-        <Route
-          path="/"
-          element={<Home />}
-        />
+      {/* Lazy Loaded Pages */}
+      <Suspense fallback={<PageLoader />}>
 
-        <Route
-          path="/todos"
-          element={<TodoApp />}
-        />
+        <Routes>
 
-        <Route
-          path="/flip-coin"
-          element={<FlipCoinApp />}
-        />
+          {/* HOME */}
+          <Route
+            path="/"
+            element={<Home />}
+          />
 
-        <Route
-          path="/right-wrong"
-          element={<RightWrongGame />}
-        />
+          {/* TODO */}
+          <Route
+            path="/todos"
+            element={<TodoApp />}
+          />
 
-        <Route
-          path="/right-wrong-grid"
-          element={<RightWrongGrid />}
-        />
+          {/* FLIP COIN */}
+          <Route
+            path="/flip-coin"
+            element={<FlipCoinApp />}
+          />
 
-        <Route
-          path="/terms-conditions"
-          element={<TermsConditions />}
-        />
+          {/* RIGHT WRONG */}
+          <Route
+            path="/right-wrong"
+            element={<RightWrongGame />}
+          />
 
-        <Route
-          path="/policy"
-          element={<Policy />}
-        />
+          {/* RIGHT WRONG GRID */}
+          <Route
+            path="/right-wrong-grid"
+            element={<RightWrongGrid />}
+          />
 
-        <Route
-          path="/money-recovery-tracker"
-          element={<MoneyRecoveryTracker />}
-        />
+          {/* TERMS & CONDITIONS */}
+          <Route
+            path="/terms-conditions"
+            element={<TermsConditions />}
+          />
 
-        {/* OLD Expense Tracker */}
-        <Route
-          path="/expense-tracker"
-          element={<ExpenseTracker />}
-        />
+          {/* PRIVACY POLICY */}
+          <Route
+            path="/policy"
+            element={<Policy />}
+          />
 
-        {/* NEW Money Tracker */}
-        <Route
-          path="/money-tracker/*"
-          element={<MoneyTracker />}
-        />
+          {/* MONEY RECOVERY TRACKER */}
+          <Route
+            path="/money-recovery-tracker"
+            element={<MoneyRecoveryTracker />}
+          />
 
-        <Route
-          path="/games/snake"
-          element={<SnakeGame />}
-        />
+          {/* EXPENSE TRACKER */}
+          <Route
+            path="/expense-tracker"
+            element={<ExpenseTracker />}
+          />
 
-        <Route
-          path="/games/dots-and-boxes"
-          element={<DotsAndBoxes />}
-        />
+          {/* MONEY TRACKER */}
+          <Route
+            path="/money-tracker/*"
+            element={<MoneyTracker />}
+          />
 
-      </Routes>
+          {/* SNAKE GAME */}
+          <Route
+            path="/games/snake"
+            element={<SnakeGame />}
+          />
 
+          {/* DOTS & BOXES */}
+          <Route
+            path="/games/dots-and-boxes"
+            element={<DotsAndBoxes />}
+          />
 
-      {/* <Footer /> */}
+        </Routes>
+
+      </Suspense>
+
+      {/* Footer can be added here if required */}
+
     </main>
+
   );
+
 };
 
 export default App;
