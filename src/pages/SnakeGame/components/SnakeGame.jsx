@@ -11,7 +11,10 @@ import PowerUps from "./PowerUps";
 import GameModeSelector from "./GameModeSelector";
 import GameSettings from "./GameSettings";
 import GameOver from "./GameOver";
-import MobileControls from "./MobileControls";
+
+// import MobileControls from "./MobileControls";
+import Joystick from "./Joystick";
+
 import EnvironmentSelector from "./EnvironmentSelector";
 
 // Hooks
@@ -209,9 +212,14 @@ export default function SnakeGame() {
                         </div>
 
                         {/* MOBILE CONTROLS */}
-                        <div className="mt-5 w-full">
+                        {/* <div className="mt-5 w-full">
                             <MobileControls
                                 onDirection={game.changeDirection}
+                            />
+                        </div> */}
+                        <div className="mt-8 mb-6 flex justify-center">
+                            <Joystick
+                                onDirectionChange={game.changeDirection}
                             />
                         </div>
 
