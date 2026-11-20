@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-
 import { motion, AnimatePresence } from "motion/react";
 
 // Components
@@ -11,14 +10,12 @@ import PowerUps from "./PowerUps";
 import GameModeSelector from "./GameModeSelector";
 import GameSettings from "./GameSettings";
 import GameOver from "./GameOver";
-
-// import MobileControls from "./MobileControls";
-import Joystick from "./Joystick";
-
 import EnvironmentSelector from "./EnvironmentSelector";
+import GameController from "./GameController";
 
 // Hooks
 import useSnakeGame from "../hooks/useSnakeGame";
+import useSwipeControls from "../hooks/useSwipeControls";
 
 // Configuration
 import { environments, getEnvironment } from "../config/environments";
@@ -47,6 +44,12 @@ export default function SnakeGame() {
         return isValidTheme ? savedTheme : "forest";
     });
 
+    // TOUCH + MOUSE SWIPE CONTROLS
+    const swipeControls = useSwipeControls({
+        onDirectionChange: game.changeDirection,
+        disabled: game.status !== "playing",
+    });
+
     const currentEnvironment = getEnvironment(selectedTheme);
 
     // SELECT ENVIRONMENT
@@ -64,9 +67,10 @@ export default function SnakeGame() {
 
         setSelectedTheme(environmentId);
         localStorage.setItem("snakeTheme", environmentId);
+
         setShowEnvironments(false);
 
-        // Stay on the main menu. Do not start the game.
+        // Stay on main menu. Do not start the game.
         game.setStatus("menu");
     };
 
@@ -123,7 +127,8 @@ export default function SnakeGame() {
                 relative min-h-screen overflow-hidden
             `}
             style={{
-                backgroundColor: currentEnvironment?.background || "#071b13",
+                backgroundColor:
+                    currentEnvironment?.background || "#071b13",
             }}
         >
             {/* ENVIRONMENT BACKGROUND */}
@@ -193,8 +198,16 @@ export default function SnakeGame() {
                         lg:order-2
                     ">
 
-                        {/* GAME BOARD */}
-                        <div className="w-full">
+                        {/* GAME BOARD + SWIPE CONTROLS */}
+                        <div
+                            {...swipeControls}
+                            className="
+                                w-full
+                                touch-none
+                                select-none
+                                cursor-crosshair
+                            "
+                        >
                             <GameBoard
                                 snake={game.snake}
                                 food={game.food}
@@ -211,15 +224,11 @@ export default function SnakeGame() {
                             />
                         </div>
 
-                        {/* MOBILE CONTROLS */}
-                        {/* <div className="mt-5 w-full">
-                            <MobileControls
-                                onDirection={game.changeDirection}
-                            />
-                        </div> */}
-                        <div className="mt-8 mb-6 flex justify-center">
-                            <Joystick
+                        {/* JOYSTICK / ARROW BUTTON CONTROLLER */}
+                        <div className="mt-8 mb-6 flex w-full justify-center">
+                            <GameController
                                 onDirectionChange={game.changeDirection}
+                                disabled={game.status !== "playing"}
                             />
                         </div>
 
@@ -228,9 +237,18 @@ export default function SnakeGame() {
                             {game.status === "gameover" && (
                                 <motion.div
                                     key="game-over"
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    initial={{
+                                        opacity: 0,
+                                        scale: 0.9,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        scale: 1,
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 0.9,
+                                    }}
                                     transition={{ duration: 0.3 }}
                                     className="
                                         absolute inset-0 z-30
@@ -347,9 +365,21 @@ export default function SnakeGame() {
                         onClick={() => setShowLeaderboard(false)}
                     >
                         <motion.div
-                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                            initial={{
+                                opacity: 0,
+                                y: 20,
+                                scale: 0.95,
+                            }}
+                            animate={{
+                                opacity: 1,
+                                y: 0,
+                                scale: 1,
+                            }}
+                            exit={{
+                                opacity: 0,
+                                y: 20,
+                                scale: 0.95,
+                            }}
                             onClick={(event) => event.stopPropagation()}
                             className="
                                 relative w-full max-w-md
@@ -375,9 +405,11 @@ export default function SnakeGame() {
 
                             <div className="mb-6 text-center">
                                 <div className="mb-3 text-4xl">🏆</div>
+
                                 <h2 className="text-2xl font-bold">
                                     Leaderboard
                                 </h2>
+
                                 <p className="mt-2 text-sm text-white/50">
                                     Your personal gaming record
                                 </p>

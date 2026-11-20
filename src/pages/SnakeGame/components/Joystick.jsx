@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import {
     Move,
@@ -12,7 +12,11 @@ import {
 const MAX_TRAVEL = 42;
 const DEAD_ZONE = 18;
 
-const Joystick = ({ onDirectionChange }) => {
+const Joystick = ({
+    onDirectionChange,
+    disabled = false,
+    compact = false,
+}) => {
     const [position, setPosition] = useState({
         x: 0,
         y: 0,
@@ -23,9 +27,19 @@ const Joystick = ({ onDirectionChange }) => {
     const activeRef = useRef(false);
     const lastDirectionRef = useRef(null);
 
+    // Reset joystick when disabled
+    useEffect(() => {
+        if (disabled) {
+            activeRef.current = false;
+            lastDirectionRef.current = null;
+            setIsActive(false);
+            setPosition({ x: 0, y: 0 });
+        }
+    }, [disabled]);
+
     // Determine direction
     const handleMove = (event) => {
-        if (!activeRef.current) return;
+        if (!activeRef.current || disabled) return;
 
         const rect = event.currentTarget.getBoundingClientRect();
 
@@ -63,13 +77,14 @@ const Joystick = ({ onDirectionChange }) => {
         // Prevent repeated direction updates
         if (lastDirectionRef.current !== direction) {
             lastDirectionRef.current = direction;
-
             onDirectionChange?.(direction);
         }
     };
 
     // Start dragging
     const handleStart = (event) => {
+        if (disabled) return;
+
         event.preventDefault();
 
         activeRef.current = true;
@@ -84,6 +99,8 @@ const Joystick = ({ onDirectionChange }) => {
 
     // Stop dragging
     const handleEnd = () => {
+        if (!activeRef.current) return;
+
         activeRef.current = false;
         lastDirectionRef.current = null;
 
@@ -99,19 +116,23 @@ const Joystick = ({ onDirectionChange }) => {
         <div className="flex flex-col items-center gap-4">
 
             {/* Controller heading */}
-            <div className="text-center">
-                <div className="flex items-center justify-center gap-2">
-                    <Move size={17} className="text-purple-400" />
+            {!compact && (
+                <div className="text-center">
+                    <div className="flex items-center justify-center gap-2">
+                        <Move size={17} className="text-purple-400" />
 
-                    <h3 className="text-sm font-extrabold tracking-widest text-white">
-                        SNAKE CONTROLLER
-                    </h3>
+                        <h3 className="text-sm font-extrabold tracking-widest text-white">
+                            SNAKE CONTROLLER
+                        </h3>
+                    </div>
+
+                    <p className="mt-1 text-xs text-slate-400">
+                        {disabled
+                            ? "Start the game to use the controller"
+                            : "Drag the joystick to control your snake"}
+                    </p>
                 </div>
-
-                <p className="mt-1 text-xs text-slate-400">
-                    Drag the joystick to control your snake
-                </p>
-            </div>
+            )}
 
             {/* Joystick */}
             <motion.div
@@ -124,32 +145,33 @@ const Joystick = ({ onDirectionChange }) => {
                 onPointerMove={handleMove}
                 onPointerUp={handleEnd}
                 onPointerCancel={handleEnd}
-                className="
-          relative flex h-36 w-36
-          touch-none select-none
-          cursor-grab items-center
-          justify-center rounded-full
-          border-2 border-purple-600
-          bg-gradient-to-br
-          from-[#282047] to-[#100d25]
-          shadow-[0_0_30px_rgba(139,92,246,0.25)]
-          active:cursor-grabbing
-        "
+                onLostPointerCapture={handleEnd}
+                className={`
+                    relative flex h-36 w-36
+                    touch-none select-none
+                    items-center justify-center rounded-full
+                    border-2
+                    bg-gradient-to-br
+                    from-[#282047] to-[#100d25]
+                    shadow-[0_0_30px_rgba(139,92,246,0.25)]
+                    ${disabled
+                        ? "cursor-not-allowed opacity-40"
+                        : "cursor-grab active:cursor-grabbing"
+                    }
+                `}
             >
-
                 {/* Outer ring */}
                 <div className="
-          absolute inset-3 rounded-full
-          border border-purple-400/20
-        " />
+                    pointer-events-none absolute inset-3 rounded-full
+                    border border-purple-400/20
+                " />
 
                 {/* Direction indicators */}
                 <div className="
-          absolute inset-5 grid
-          grid-cols-3 grid-rows-3
-          place-items-center
-          text-purple-400/40
-        ">
+                    pointer-events-none absolute inset-5
+                    grid grid-cols-3 grid-rows-3
+                    place-items-center text-purple-400/40
+                ">
                     <span className="col-start-2 row-start-1">
                         <ArrowUp size={14} />
                     </span>
@@ -181,57 +203,62 @@ const Joystick = ({ onDirectionChange }) => {
                         mass: 0.5,
                     }}
                     className="
-            relative z-10
-            flex h-16 w-16
-            items-center justify-center
-            rounded-full border-2
-            border-purple-200/50
-            bg-gradient-to-br
-            from-purple-500 via-violet-600
-            to-indigo-700
-            text-white
-            shadow-[0_0_25px_rgba(168,85,247,0.65)]
-            pointer-events-none
-          "
+                        pointer-events-none relative z-10
+                        flex h-16 w-16
+                        items-center justify-center
+                        rounded-full border-2
+                        border-purple-200/50
+                        bg-gradient-to-br
+                        from-purple-500 via-violet-600
+                        to-indigo-700
+                        text-white
+                        shadow-[0_0_25px_rgba(168,85,247,0.65)]
+                    "
                 >
                     <Move size={25} strokeWidth={2.5} />
                 </motion.div>
 
                 {/* Center glow */}
                 <div className="
-          pointer-events-none absolute
-          h-20 w-20 rounded-full
-          bg-purple-500/10 blur-xl
-        " />
-
+                    pointer-events-none absolute
+                    h-20 w-20 rounded-full
+                    bg-purple-500/10 blur-xl
+                " />
             </motion.div>
 
             {/* Controller status */}
-            <motion.div
-                key={isActive ? "active" : "idle"}
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="
-          flex items-center gap-2
-          rounded-full border
-          border-white/10
-          bg-white/[0.04]
-          px-4 py-2
-        "
-            >
-                <span className={`
-          h-2 w-2 rounded-full
-          ${isActive
-                        ? "bg-emerald-400 shadow-[0_0_10px_#34d399]"
-                        : "bg-purple-400"
-                    }
-        `} />
+            {!compact && (
+                <motion.div
+                    key={isActive ? "active" : disabled ? "disabled" : "idle"}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="
+                        flex items-center gap-2
+                        rounded-full border border-white/10
+                        bg-white/[0.04] px-4 py-2
+                    "
+                >
+                    <span
+                        className={`
+                            h-2 w-2 rounded-full
+                            ${disabled
+                                ? "bg-slate-500"
+                                : isActive
+                                    ? "bg-emerald-400 shadow-[0_0_10px_#34d399]"
+                                    : "bg-purple-400"
+                            }
+                        `}
+                    />
 
-                <span className="text-[10px] font-bold tracking-wider text-slate-300">
-                    {isActive ? "CONTROLLER ACTIVE" : "READY TO PLAY"}
-                </span>
-            </motion.div>
-
+                    <span className="text-[10px] font-bold tracking-wider text-slate-300">
+                        {disabled
+                            ? "CONTROLLER DISABLED"
+                            : isActive
+                                ? "CONTROLLER ACTIVE"
+                                : "READY TO PLAY"}
+                    </span>
+                </motion.div>
+            )}
         </div>
     );
 };
